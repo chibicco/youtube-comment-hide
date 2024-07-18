@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "Youtube Comment Hide",
+    "name": "YouTube Comment Hide",
     "version": "1.0",
     "description": "This Chrome extension hides YouTube comments for a distraction-free viewing experience.",
     "icons": {

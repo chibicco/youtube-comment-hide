@@ -1,15 +1,19 @@
+try {
+  importScripts('./constants.js');
+} catch (e) {
+  console.error('Failed to import constants:', e);
+}
+
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.sync.set({ YouTubeCommentHideEnabled: true });
+  chrome.storage.sync.set({ [STORAGE_KEY]: true });
 });
 
 chrome.action.onClicked.addListener((tab) => {
-  chrome.storage.sync.get(['YouTubeCommentHideEnabled'], (result) => {
-    const newValue = !result.YouTubeCommentHideEnabled;
-    chrome.storage.sync.set({ YouTubeCommentHideEnabled: newValue }, () => {
+  chrome.storage.sync.get([STORAGE_KEY], (result) => {
+    const newValue = !result[STORAGE_KEY];
+    chrome.storage.sync.set({ [STORAGE_KEY]: newValue }, () => {
       updateAction(newValue);
-      sendMessageToTab(tab.id, { YouTubeCommentHideEnabled: newValue })
-        .then(() => {
-        })
+      sendMessageToTab(tab.id, { [STORAGE_KEY]: newValue })
         .catch(error => {
           console.error('Error sending message:', error);
         });
@@ -18,17 +22,7 @@ chrome.action.onClicked.addListener((tab) => {
 });
 
 function updateAction(YouTubeCommentHideEnabled) {
-  const iconPath = YouTubeCommentHideEnabled
-  ? {
-      "16": "/images/icon-16.png",
-      "48": "/images/icon-48.png",
-      "128": "/images/icon-128.png"
-    }
-  : {
-      "16": "/images/icon-disabled-16.png",
-      "48": "/images/icon-disabled-48.png",
-      "128": "/images/icon-disabled-128.png"
-    };
+  const iconPath = YouTubeCommentHideEnabled ? ICON_PATHS.enabled : ICON_PATHS.disabled;
   chrome.action.setIcon({ path: iconPath });
 }
 

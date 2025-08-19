@@ -1,12 +1,12 @@
 const hideComments = () => {
-  const commentsSection = document.querySelector('#comments');
+  const commentsSection = document.querySelector(COMMENTS_SELECTOR);
   if (commentsSection) {
     commentsSection.style.visibility = 'hidden';
   }
 };
 
 const showComments = () => {
-  const commentsSection = document.querySelector('#comments');
+  const commentsSection = document.querySelector(COMMENTS_SELECTOR);
   if (commentsSection) {
     commentsSection.style.visibility = 'visible';
   }
@@ -20,37 +20,30 @@ const toggleComments = (hide) => {
   }
 };
 
-chrome.storage.sync.get(['YouTubeCommentHideEnabled'], (result) => {
-  toggleComments(result.YouTubeCommentHideEnabled);
+const initializeCommentToggle = () => {
+  chrome.storage.sync.get([STORAGE_KEY], (result) => {
+    toggleComments(result[STORAGE_KEY]);
 
-  const sectionsElement = document.querySelector('#sections');
-  if (sectionsElement) {
-    const observer = new MutationObserver(() => toggleComments(result.YouTubeCommentHideEnabled));
-    observer.observe(sectionsElement, {
-      childList: true,
-      subtree: true,
-    });
-  }
-});
-
-document.addEventListener('yt-navigate-finish', () => {
-  chrome.storage.sync.get(['YouTubeCommentHideEnabled'], (result) => {
-    toggleComments(result.YouTubeCommentHideEnabled);
-
-    const sectionsElement = document.querySelector('#sections');
+    const sectionsElement = document.querySelector(SECTIONS_SELECTOR);
     if (sectionsElement) {
-      const observer = new MutationObserver(() => toggleComments(result.YouTubeCommentHideEnabled));
+      const observer = new MutationObserver(() => toggleComments(result[STORAGE_KEY]));
       observer.observe(sectionsElement, {
         childList: true,
         subtree: true,
       });
     }
   });
+};
+
+initializeCommentToggle();
+
+document.addEventListener('yt-navigate-finish', () => {
+  initializeCommentToggle();
 });
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.YouTubeCommentHideEnabled !== undefined) {
-    toggleComments(request.YouTubeCommentHideEnabled);
+  if (request[STORAGE_KEY] !== undefined) {
+    toggleComments(request[STORAGE_KEY]);
     sendResponse({ status: 'success' });
   }
 });

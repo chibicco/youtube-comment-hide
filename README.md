@@ -5,6 +5,26 @@ You can download it from [here](https://chromewebstore.google.com/detail/youtube
 
 ## Development
 
+### Setup
+
+```bash
+# Install dependencies
+npm install
+```
+
+### Testing
+
+```bash
+# Run tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Run tests with coverage report
+npm run test:coverage
+```
+
 ### Building the Extension Package
 
 ```bash

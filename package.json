@@ -1,0 +1,29 @@
+{
+  "name": "youtube-comment-hide",
+  "version": "1.0.0",
+  "description": "This is a Chrome extension that hides the YouTube comment section.   You can download it from [here](https://chromewebstore.google.com/detail/youtube-comment-hide/ekooomlnaghfabpbbcihikpakihlhaag).",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/chibicco/youtube-comment-hide.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chibicco/youtube-comment-hide/issues"
+  },
+  "homepage": "https://github.com/chibicco/youtube-comment-hide#readme",
+  "devDependencies": {
+    "@types/chrome": "^0.1.6",
+    "jest": "^27.5.1",
+    "jest-chrome": "^0.8.0",
+    "jest-environment-jsdom": "^27.5.1",
+    "sinon-chrome": "^3.0.1"
+  }
+}

@@ -30,10 +30,14 @@ chrome.action.onClicked.addListener((tab) => {
     const newValue = !result[STORAGE_KEY];
     chrome.storage.sync.set({ [STORAGE_KEY]: newValue }, () => {
       updateAction(newValue);
-      sendMessageToTab(tab.id, { [STORAGE_KEY]: newValue })
-        .catch(error => {
-          console.error('Error sending message:', error);
-        });
+      // YouTubeタブの場合のみメッセージを送信（storage.onChangedで同期されるため必須ではない）
+      if (tab.url && tab.url.includes('youtube.com')) {
+        sendMessageToTab(tab.id, { [STORAGE_KEY]: newValue })
+          .catch(error => {
+            // content scriptがまだロードされていない場合は無視（storage.onChangedで同期される）
+            console.log('Content script not ready, will sync via storage.onChanged');
+          });
+      }
     });
   });
 });
